@@ -1,0 +1,30 @@
+/* 现代雪花背景 */
+.snow-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.flake {
+  position: absolute;
+  top: -10px;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: snowFall 10s linear infinite;
+}
+
+@keyframes snowFall {
+  to { transform: translateY(100vh) translateX(50px); }
+}
+
+/* 为雪花生成随机位置 */
+.flake:nth-child(1) { left: 10%; animation-duration: 8s; }
+.flake:nth-child(2) { left: 30%; animation-duration: 12s; }
+.flake:nth-child(3) { left: 50%; animation-duration: 9s; }
+.flake:nth-child(4) { left: 70%; animation-duration: 15s; }
+.flake:nth-child(5) { left: 90%; animation-duration: 11s; }
+/* ... 你可以根据需要增加更多 nth-child ... */
