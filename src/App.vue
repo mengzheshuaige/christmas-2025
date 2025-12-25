@@ -131,16 +131,27 @@
   
   .intro-overlay:hover .line { width: 220px; }
   
-  /* --- 主场景布局 --- */
-  .main-stage {
+  明白了，这种“距离感”通常是因为 flex: 1 占据了屏幕所有剩余空间并把照片强行居中导致的。
+
+为了让标题和照片像精心排版的杂志一样紧凑、成对出现，我们需要彻底抛弃“自动平分空间”的逻辑，改用精准的间距控制。
+
+以下是优化后的 App.vue 样式，它将距离锁死，无论屏幕多大，照片都会紧跟在标题下方：
+
+1. 更新 src/App.vue 的样式
+请替换 <style> 部分中的相关类，或者直接覆盖：
+
+CSS
+
+/* --- 主场景布局：由分散改为聚合 --- */
+.main-stage {
   display: flex;
   flex-direction: column;
-  align-items: center; /* 水平居中 */
-  height: 100vh;
+  align-items: center;
+  min-height: 100vh; 
   width: 100vw;
   position: relative;
-  /* 增加一个全局的平滑滚动，如果内容多的话 */
-  overflow-y: auto; 
+  overflow-y: auto;
+  overflow-x: hidden;
 }
   
   .ambient-gradient {
@@ -151,24 +162,22 @@
   }
   
   .luxury-header {
-  flex: 0 0 auto;
-  /* 电脑端适当增加顶部距离，手机端通过 media query 调整 */
-  padding-top: 8vh; 
-  padding-bottom: 2vh;
+  /* 缩小顶部留白，让标题上移 */
+  padding-top: 5vh; 
+  padding-bottom: 0;
+  width: 100%;
   text-align: center;
-  z-index: 5;
+  z-index: 10;
 }
 .gallery-container {
-  flex: 0 1 auto; /* 不要强行撑满全屏 */
   width: 100%;
   display: flex;
-  align-items: flex-start; /* 改为从顶部开始排列，不再垂直居中 */
   justify-content: center;
-  /* 关键：限制照片与标题的间距 */
+  align-items: flex-start; /* 靠顶对齐 */
+  /* 这里控制标题和照片的死距离：40px */
   margin-top: 20px; 
-  z-index: 2;
-  /* 防止电脑端照片太大超出屏幕 */
-  max-height: 60vh; 
+  padding-bottom: 40px; /* 给底部留一点呼吸空间 */
+  z-index: 5;
 }
   
   /* --- 核心标题动画 --- */
@@ -241,31 +250,23 @@
   .flake:nth-child(odd) { width: 1px; height: 1px; }
   
   /* 响应式调整 */
-  @media (max-height: 700px) {
-    .luxury-header { padding-top: 30px; }
-    h1 { font-size: 2rem; }
-  }
-  @media (min-width: 1024px) {
+  @media (max-width: 768px) {
   .luxury-header {
-    padding-top: 10vh; /* 电脑端标题稍稍往下一点，显得大气 */
+    padding-top: 40px; /* 手机端标题离顶 40px */
+  }
+  h1 {
+    font-size: 2.2rem; /* 减小字号，避免占位过多 */
+    letter-spacing: 0.3rem;
   }
   .gallery-container {
-    margin-top: 40px; /* 标题和照片之间保持 40px 的黄金距离 */
+    margin-top: 10px; /* 手机端距离更近 */
   }
 }
 
-/* 针对手机端的优化 */
-@media (max-width: 768px) {
-  .luxury-header {
-    padding-top: 60px;
-  }
-  h1 {
-    font-size: 2.5rem;
-    letter-spacing: 0.4rem;
-  }
+/* 针对超大屏电脑：限制照片高度，不让它把页面撑得太离谱 */
+@media (min-width: 1200px) {
   .gallery-container {
-    margin-top: 20px;
-    max-height: none; /* 手机端允许照片自然展示 */
+    margin-top: 30px;
   }
 }
   </style>

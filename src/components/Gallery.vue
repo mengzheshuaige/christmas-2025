@@ -68,9 +68,19 @@ const handleAction = (e) => {
 </script>
 
 <style scoped>
-.gallery-container { height: 100vh; display: flex; align-items: center; justify-content: center; padding-top: 10vh; }
+.gallery-container {
+  /* 不要设置 height: 100vh 或 height: 100% */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
 .photo-perspective { perspective: 2000px; }
-
+.photo-card {
+  /* 确保照片高度自适应 */
+  width: 75vw;
+  max-width: 400px; /* 电脑上照片不要太大 */
+  aspect-ratio: 3 / 4;
+}
 .photo-frame {
   position: relative;
   width: 70vw; max-width: 380px; aspect-ratio: 3/4;
