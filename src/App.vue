@@ -19,6 +19,7 @@
           <div class="gift-trigger">
             <div class="sparkle">✦</div>
             <p>UNWRAP THE MAGIC</p>
+            <p class="special-to">To: 陆敏蔚</p>
             <div class="line"></div>
           </div>
         </div>
